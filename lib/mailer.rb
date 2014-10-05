@@ -12,7 +12,6 @@ ActionMailer::Base.smtp_settings = {
   :enable_starttls_auto => true
 }
 ActionMailer::Base.view_paths = File.dirname(__FILE__)
-puts File.dirname(__FILE__)
 
 class Mailer < ActionMailer::Base
 
