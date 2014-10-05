@@ -7,7 +7,7 @@ require_relative 'lib/prober'
 
 ## Sample configuration
 
-monitor = Monitor.new({notify_emails: ["jamo@isotalo.fi"]})
+monitor = Monitor.new({notify_emails: ["email@example.com"]})
 
 monitor.add_monitor({
   exercise_return_url: 'https://tmc.mooc.fi/staging/exercises/839/submissions.json',

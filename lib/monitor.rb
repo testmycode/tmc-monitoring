@@ -40,14 +40,20 @@ class Monitor
 
   def monitor
     @monitors.each do |monitor|
+      begin
       passed, failed, results = monitor.submit_and_validate
       @passed[monitor] = passed
       @failed[monitor] = failed
       @results[monitor] = results
+      rescue => e
+        @failed[monitor] = e
+      end
     end
 
-    print_results
-    send_alert generate_results.gsub("\n", "<br />")
+    #print_results
+    if @failed.any?
+      send_alert generate_results.gsub("\n", "<br />")
+    end
   end
 
   def send_alert(body)
@@ -58,6 +64,7 @@ class Monitor
 
   def generate_results
     result = []
+    result << "Happened at: #{Time.now}"
     result << "<h3><font color=3D\"#ff0000\">FAILURES</font></h3>"
     result << "Following monitors has failed"
     @failed.each do |monitor, results|
