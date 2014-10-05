@@ -1,9 +1,40 @@
+require 'json'
+require 'pp'
+require 'httmultiparty'
 
 class Prober
 
-  def submit_and_get_results(exercise_return_url: "", auth: {}, query: {}, poll_times: 10, sleep_time: 2)
-    url = submit(exercise_return_url, auth, query)['submission_url']
-    poll_submission(url, auth, poll_times, sleep_time)
+  def initialize(opts = {})
+    @exercise_return_url = opts[:exercise_return_url]
+    @auth = opts[:auth]
+    @query = opts[:query]
+    @poll_times = opts[:poll_times]
+    @sleep_time = opts[:sleep_time]
+    @expected_results = opts[:expected_results]
+  end
+
+  def to_s
+    "#{@exercise_return_url}"
+  end
+
+  def submit_and_validate()
+    results = submit_and_get_results
+    passed = []
+    failed = []
+    @expected_results.each do |key, value|
+      result = results[key] == value
+      if result
+        passed << "#{key} -> #{value}"
+      else
+        failed << "#{key} -> #{value} but was #{results[key]}"
+      end
+    end
+    [passed, failed]
+  end
+
+  def submit_and_get_results()
+    url = submit(@exercise_return_url, @auth, @query)['submission_url']
+    poll_submission(url, @auth, @poll_times, @sleep_time)
   end
 
   private
@@ -23,7 +54,5 @@ class Prober
       times -= 1
     end
   end
-
-
 end
 
