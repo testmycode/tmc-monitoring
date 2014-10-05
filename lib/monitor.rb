@@ -69,7 +69,6 @@ class Monitor
     end
     if @failed.any?
       puts JSON.pretty_generate(@results).red
-
     end
   end
 
