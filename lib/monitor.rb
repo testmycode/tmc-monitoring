@@ -59,6 +59,7 @@ class Monitor
   def generate_results
     result = []
     result << "<h3><font color=3D\"#ff0000\">FAILURES</font></h3>"
+    result << "Following monitors has failed"
     @failed.each do |monitor, results|
       result << "  #{monitor}"
       results.each do |res|
@@ -66,6 +67,7 @@ class Monitor
       end
     end
     result << "<font color=\"#38761d\"><h3>PASSED</h3></font>"
+    result << "Following monitors has passed"
     @passed.each do |monitor, results|
       result << "  #{monitor}"
       results.each do |res|

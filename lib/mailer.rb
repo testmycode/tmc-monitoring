@@ -19,7 +19,7 @@ class Mailer < ActionMailer::Base
     @body = body
     mail( :to      => email,
          :from    => "TMC PROBER <jarmoiso@cs.helsinki.fi>",
-         :subject => "subject") do |format|
+         :subject => "FYI: Some TMC probers has failed") do |format|
            format.html
          end
   end

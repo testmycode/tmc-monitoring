@@ -5,6 +5,5 @@ gem 'rspec'
 gem 'rspec-core'
 gem 'rspec-mocks'
 gem 'rspec-support'
-
-
+gem 'rails'
 
