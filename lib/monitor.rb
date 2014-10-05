@@ -58,22 +58,23 @@ class Monitor
 
   def generate_results
     result = []
-    result << "<font color=\"#38761d\">PASSED</font>"
-    @passed.each do |monitor, results|
-      result << "  #{monitor}"
-      results.each do |res|
-        result << "    #{res}"
-      end
-    end
-    result << "<font color=3D\"#ff0000\">FAILURES</font>"
+    result << "<h3><font color=3D\"#ff0000\">FAILURES</font></h3>"
     @failed.each do |monitor, results|
       result << "  #{monitor}"
       results.each do |res|
         result << "    #{res}"
       end
     end
+    result << "<font color=\"#38761d\"><h3>PASSED</h3></font>"
+    @passed.each do |monitor, results|
+      result << "  #{monitor}"
+      results.each do |res|
+        result << "    #{res}"
+      end
+    end
     if @failed.any?
-      result <<  JSON.pretty_generate(@results)
+      result << "<h4>Full result</h4>"
+      result <<  JSON.pretty_generate(@results).gsub("{", " ").gsub("}", " ")
     end
     result.join("\n").gsub(" ", "&nbsp;")
   end
