@@ -21,12 +21,16 @@ class Prober
     results = submit_and_get_results
     passed = []
     failed = []
-    @expected_results.each do |key, value|
-      result = results[key] == value
-      if result
-        passed << "#{key} -> #{value}"
-      else
-        failed << "#{key} -> #{value} but was #{results[key]}"
+    if results.nil?
+      failed << "Results is nil"
+    else
+      @expected_results.each do |key, value|
+        result = results[key] == value
+        if result
+          passed << "#{key} -> #{value}"
+        else
+          failed << "#{key} -> #{value} but was #{results[key]}"
+        end
       end
     end
     [passed, failed, results]
