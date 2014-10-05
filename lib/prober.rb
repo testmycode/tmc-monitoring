@@ -29,7 +29,7 @@ class Prober
         failed << "#{key} -> #{value} but was #{results[key]}"
       end
     end
-    [passed, failed]
+    [passed, failed, results]
   end
 
   def submit_and_get_results()
@@ -44,7 +44,7 @@ class Prober
   end
 
   def poll_submission(url, auth, times, sleep_time)
-    results = {}
+    results = {timeout: {times: times, sleep_time: sleep_time}, url: url}
     while(times > 0)
       results = JSON.parse HTTParty.get(url, basic_auth: auth).body
       if results['processing_time']

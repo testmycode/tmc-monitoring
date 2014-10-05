@@ -1,4 +1,3 @@
-
 require 'json'
 require 'pp'
 require 'httmultiparty'
@@ -34,6 +33,7 @@ class Monitor
     @monitors = []
     @passed = {}
     @failed = {}
+    @results = {}
   end
 
   def add_monitor(opts = {})
@@ -43,9 +43,10 @@ class Monitor
 
   def monitor
     @monitors.each do |monitor|
-      passed, failed = monitor.submit_and_validate
+      passed, failed, results = monitor.submit_and_validate
       @passed[monitor] = passed
       @failed[monitor] = failed
+      @results[monitor] = results
     end
 
     print_results
@@ -65,6 +66,10 @@ class Monitor
       results.each do |result|
         puts "    #{@red}#{result}#{@clear}".red
       end
+    end
+    if @failed.any?
+      puts JSON.pretty_generate(@results).red
+
     end
   end
 
