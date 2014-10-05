@@ -13,10 +13,6 @@ class Prober
     @expected_results = opts[:expected_results]
   end
 
-  def to_s
-    "#{@exercise_return_url}"
-  end
-
   def submit_and_validate()
     results = submit_and_get_results
     passed = []
@@ -48,7 +44,7 @@ class Prober
   end
 
   def poll_submission(url, auth, times, sleep_time)
-    results = {timeout: {times: times, sleep_time: sleep_time}, url: url}
+    results = {}
     while(times > 0)
       results = JSON.parse HTTParty.get(url, basic_auth: auth).body
       if results['processing_time']
@@ -57,6 +53,12 @@ class Prober
       sleep(sleep_time)
       times -= 1
     end
+    {timeout: {times: times, sleep_time: sleep_time}, url: url}
   end
+
+  def to_s
+    "#{@exercise_return_url}"
+  end
+
 end
 

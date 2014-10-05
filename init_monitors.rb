@@ -1,5 +1,11 @@
+require 'rubygems'
+require 'bundler'
+Bundler.require(:default)
+
 require_relative 'lib/monitor'
 require_relative 'lib/prober'
+
+## Sample configuration
 
 monitor = Monitor.new({notify_emails: ["jamo@isotalo.fi"]})
 
