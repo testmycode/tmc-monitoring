@@ -1,6 +1,7 @@
 require 'json'
 require 'pp'
 require 'httmultiparty'
+require_relative 'mailer'
 class String
   def black;          "\033[30m#{self}\033[0m" end
   def red;            "\033[31m#{self}\033[0m" end
@@ -24,16 +25,12 @@ end
 
 class Monitor
 
-@green = "e[0;32m"
-@reset = "\e[0m"
-  @clear = "\e[0m"
-  @red = "\e[31m"
-
-  def initialize()
+  def initialize(opts = {})
     @monitors = []
     @passed = {}
     @failed = {}
     @results = {}
+    @notify_emails = opts[:notify_emails]
   end
 
   def add_monitor(opts = {})
@@ -50,6 +47,35 @@ class Monitor
     end
 
     print_results
+    send_alert generate_results.gsub("\n", "<br />")
+  end
+
+  def send_alert(body)
+    @notify_emails.each do |email|
+      Mailer.alert(email, body).deliver
+    end
+  end
+
+  def generate_results
+    result = []
+    result << "PASSED"
+    @passed.each do |monitor, results|
+      result << "  #{monitor}"
+      results.each do |res|
+        result << "    #{res}"
+      end
+    end
+    result << "FAILURES"
+    @failed.each do |monitor, results|
+      result << "  #{monitor}"
+      results.each do |res|
+        result << "    #{res}"
+      end
+    end
+    if @failed.any?
+      result <<  JSON.pretty_generate(@results)
+    end
+    result.join("\n").gsub(" ", "&nbsp;")
   end
 
   def print_results

@@ -1,7 +1,7 @@
 require_relative 'lib/monitor'
 require_relative 'lib/prober'
 
-monitor = Monitor.new()
+monitor = Monitor.new({notify_emails: ["jamo@isotalo.fi"]})
 
 monitor.add_monitor({
   exercise_return_url: 'https://tmc.mooc.fi/staging/exercises/839/submissions.json',
