@@ -23,7 +23,7 @@ monitor.add_monitor({
     "course"=>"jamo_demo",
     "exercise_name"=>"arith_funcs",
     "status"=>"ok",
-    "points"=>["arith-funcs", "ei ole"],
+    "points"=>["arith-funcs"],
   }
 })
 
