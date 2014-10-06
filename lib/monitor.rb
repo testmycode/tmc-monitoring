@@ -42,9 +42,9 @@ class Monitor
     @monitors.each do |monitor|
       begin
       passed, failed, results = monitor.submit_and_validate
-      @passed[monitor] = passed if passed
-      @failed[monitor] = failed if failed
-      @results[monitor] = results if results
+      @passed[monitor] = passed if passed.any?
+      @failed[monitor] = failed if failed.any?
+      @results[monitor] = results if results.any?
       rescue => e
         @failed[monitor] = e
       end
